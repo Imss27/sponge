@@ -24,8 +24,6 @@ class StreamReassembler {
 
     void check_contiguous();
 
-    size_t real_size(const std::string &data, const size_t index);
-
   public:
     //! \brief Construct a `StreamReassembler` that will store up to `capacity` bytes.
     //! \note This capacity limits both the bytes that have been reassembled,
