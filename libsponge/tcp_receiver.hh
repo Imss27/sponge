@@ -18,7 +18,7 @@ class TCPReceiver {
     StreamReassembler _reassembler;
 
     //! The maximum number of bytes we'll store.
-    size_t _capacity; 
+    size_t _capacity;
 
     bool _receivedSYN;
 
@@ -31,13 +31,8 @@ class TCPReceiver {
     //!
     //! \param capacity the maximum number of bytes that the receiver will
     //!                 store in its buffers at any give time.
-    TCPReceiver(const size_t capacity) : 
-	_reassembler(capacity), 
-	_capacity(capacity),
-        _receivedSYN(false),
-       	_receivedFIN(false),
-	_ISN(0) 
-	{}
+    TCPReceiver(const size_t capacity)
+        : _reassembler(capacity), _capacity(capacity), _receivedSYN(false), _receivedFIN(false), _ISN(0) {}
 
     //! \name Accessors to provide feedback to the remote TCPSender
     //!@{

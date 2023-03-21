@@ -20,12 +20,12 @@ void get_URL(const string &host, const string &path) {
     sock.connect(Address(host, "http"));
     string message = "GET " + path + " HTTP/1.1\r\nHost: " + host + "\r\n" + "Connection: close\r\n\r\n";
     sock.write(message);
-    while(!sock.eof()){
-    	cout << sock.read();  
+    while (!sock.eof()) {
+        cout << sock.read();
     }
-    sock.close(); 
-// A test for github push operation.
-// A test for branch solution.
+    sock.close();
+    // A test for github push operation.
+    // A test for branch solution.
 }
 
 int main(int argc, char *argv[]) {

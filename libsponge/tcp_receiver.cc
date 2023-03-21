@@ -12,9 +12,9 @@ using namespace std;
 
 void TCPReceiver::segment_received(const TCPSegment &seg) {
     const TCPHeader head = seg.header();
-    
-    if ( !head.syn && ! _receivedSYN ) {
-    	return;
+
+    if (!head.syn && !_receivedSYN) {
+        return;
     }
 
     bool eof = false;
@@ -22,17 +22,17 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
     string data = seg.payload().copy();
 
     if (head.syn && !_receivedSYN) {
-    	_ISN = head.seqno;
-	_receivedSYN = true;
-	if (head.fin) {
-	    _receivedFIN = eof = true;
-	}
-	_reassembler.push_substring(data, 0, eof);
-	return;
+        _ISN = head.seqno;
+        _receivedSYN = true;
+        if (head.fin) {
+            _receivedFIN = eof = true;
+        }
+        _reassembler.push_substring(data, 0, eof);
+        return;
     }
 
     if (_receivedSYN && head.fin) {
-    	_receivedFIN = eof = true;
+        _receivedFIN = eof = true;
     }
 
     uint64_t checkpoint = _reassembler.ack_num();
@@ -42,9 +42,9 @@ void TCPReceiver::segment_received(const TCPSegment &seg) {
     _reassembler.push_substring(data, stream_idx, eof);
 }
 
-optional<WrappingInt32> TCPReceiver::ackno() const { 
+optional<WrappingInt32> TCPReceiver::ackno() const {
     if (!_receivedSYN) {
-	return nullopt;
+        return nullopt;
     }
     return wrap(_reassembler.ack_num() + 1 + (_receivedFIN && _reassembler.empty()), _ISN);
 }

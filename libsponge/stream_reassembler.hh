@@ -3,17 +3,17 @@
 
 #include "byte_stream.hh"
 
+#include <algorithm>
 #include <cstdint>
-#include <string>
 #include <deque>
 #include <iostream>
-#include <algorithm>
+#include <string>
 //! \brief A class that assembles a series of excerpts from a byte stream (possibly out of order,
 //! possibly overlapping) into an in-order byte stream.
 class StreamReassembler {
   private:
     // Your code here -- add private members as necessary.
-    
+
     ByteStream _output;  //!< The reassembled in-order byte stream
     size_t _capacity;    //!< The maximum number of bytes
     size_t unassemble_base;
@@ -57,8 +57,6 @@ class StreamReassembler {
     bool empty() const;
 
     size_t ack_num() const;
-
-
 };
 
 #endif  // SPONGE_LIBSPONGE_STREAM_REASSEMBLER_HH

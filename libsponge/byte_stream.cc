@@ -1,4 +1,5 @@
 #include "byte_stream.hh"
+
 #include <algorithm>
 // Dummy implementation of a flow-controlled in-memory byte stream.
 
@@ -12,13 +13,14 @@ void DUMMY_CODE(Targs &&... /* unused */) {}
 
 using namespace std;
 
-ByteStream::ByteStream(const size_t capa) : buffer(), capacity(capa), end_write(false), end_read(false), write_bytes(0), read_bytes(0) {} 
+ByteStream::ByteStream(const size_t capa)
+    : buffer(), capacity(capa), end_write(false), end_read(false), write_bytes(0), read_bytes(0) {}
 
 size_t ByteStream::write(const string &data) {
     size_t can_write = capacity - buffer.size();
     size_t real_write = min(data.length(), can_write);
-    for (size_t i = 0; i < real_write; i++){
-    	buffer.push_back(data[i]);
+    for (size_t i = 0; i < real_write; i++) {
+        buffer.push_back(data[i]);
     }
     write_bytes += real_write;
     return real_write;
@@ -26,18 +28,18 @@ size_t ByteStream::write(const string &data) {
 
 //! \param[in] len bytes will be copied from the output side of the buffer
 string ByteStream::peek_output(const size_t len) const {
-    size_t can_peek = min(len,buffer.size());
+    size_t can_peek = min(len, buffer.size());
     string out = "";
-    for (size_t i = 0; i < can_peek; i++){
-    	out += buffer[i];
+    for (size_t i = 0; i < can_peek; i++) {
+        out += buffer[i];
     }
     return out;
 }
 
 //! \param[in] len bytes will be removed from the output side of the buffer
 void ByteStream::pop_output(const size_t len) {
-    for (size_t i = 0; i < len; i++){
-    	buffer.pop_front();
+    for (size_t i = 0; i < len; i++) {
+        buffer.pop_front();
     }
     read_bytes += len;
 }
@@ -52,7 +54,7 @@ std::string ByteStream::read(const size_t len) {
     return tmp;
 }
 
-void ByteStream::end_input() {end_write = true;}
+void ByteStream::end_input() { end_write = true; }
 
 bool ByteStream::input_ended() const { return end_write; }
 
