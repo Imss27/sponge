@@ -36,7 +36,12 @@ uint64_t unwrap(WrappingInt32 n, WrappingInt32 isn, uint64_t checkpoint) {
     if (tmp >= checkpoint) {
         return tmp;
     }
+    //! \note An important step.
+    // This would help to avoid long time of while loops.
+    // It turns tmp to be some int just slightly smaller than checkpoint.
+    // Otherwise there tmp needs to add 2^32 many times to get near to checkpoint.
     tmp |= ((checkpoint >> 32) << 32);
+
     while (tmp <= checkpoint)
         tmp += (1ll << 32);
     tmp_pre = tmp - (1ll << 32);
