@@ -13,8 +13,11 @@ class TCPConnection {
     TCPReceiver _receiver{_cfg.recv_capacity};
     TCPSender _sender{_cfg.send_capacity, _cfg.rt_timeout, _cfg.fixed_isn};
     size_t _time_since_last_segment_received = 0;
+
     bool _active = true;
+    
     bool _need_send_rst = false;
+
     bool _ack_for_fin_sent = false;
 
     bool push_segments_out(bool send_syn = false);
