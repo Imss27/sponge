@@ -21,13 +21,19 @@ class TCPConnection {
     bool _ack_for_fin_sent = false;
 
     bool push_segments_out(bool send_syn = false);
+
     void unclean_shutdown(bool send_rst);
+    
     bool clean_shutdown();
+    
     bool in_listen();
+    
     bool in_syn_recv();
+    
     bool in_syn_sent();
+    
     //! outbound queue of segments that the TCPConnection wants sent
-    std::queue<TCPSegment> _segments_out{};
+    std::queue<TCPSegment> _segments_out;
 
     //! Should the TCPConnection stay active (and keep ACKing)
     //! for 10 * _cfg.rt_timeout milliseconds after both streams have ended,
