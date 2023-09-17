@@ -12,33 +12,30 @@ class TCPConnection {
     TCPConfig _cfg;
     TCPReceiver _receiver{_cfg.recv_capacity};
     TCPSender _sender{_cfg.send_capacity, _cfg.rt_timeout, _cfg.fixed_isn};
-    size_t _time_since_last_segment_received = 0;
 
-    bool _active = true;
-    
-    bool _need_send_rst = false;
-
-    bool _ack_for_fin_sent = false;
-
-    bool push_segments_out(bool send_syn = false);
-
-    void unclean_shutdown(bool send_rst);
-    
-    bool clean_shutdown();
-    
-    bool in_listen();
-    
-    bool in_syn_recv();
-    
-    bool in_syn_sent();
-    
     //! outbound queue of segments that the TCPConnection wants sent
-    std::queue<TCPSegment> _segments_out;
+    std::queue<TCPSegment> _segments_out{};
 
     //! Should the TCPConnection stay active (and keep ACKing)
     //! for 10 * _cfg.rt_timeout milliseconds after both streams have ended,
     //! in case the remote TCPConnection doesn't know we've received its whole stream?
     bool _linger_after_streams_finish{true};
+
+    size_t _time_since_last_segment_received_counter{0};
+
+    bool _active{true};
+
+
+    void send_RST();
+    bool real_send();
+    void set_ack_and_windowsize(TCPSegment& segment);
+    // prereqs1 : The inbound stream has been fully assembled and has ended.
+    bool check_inbound_ended();
+    // prereqs2 : The outbound stream has been ended by the local application and fully sent (including
+    // the fact that it ended, i.e. a segment with fin ) to the remote peer.
+    // prereqs3 : The outbound stream has been fully acknowledged by the remote peer.
+    bool check_outbound_ended();
+
 
   public:
     //! \name "Input" interface for the writer
